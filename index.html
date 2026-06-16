@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evelyn Lee | AI Consultant</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--itri-blue:#0077c8;--itri-green:#008388;--itri-orange:#ff9d00;--gray-dark:#2e3a46;--gray-mid:#6b7c93;--gray-light:#f2f4f7;--surface:rgba(255,255,255,.88);--text:#2e3a46;--shadow:0 20px 40px rgba(0,119,200,.12)}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(135deg,#ffffff,#e6f4ff,#f2f4f7);overflow-x:hidden;color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei",sans-serif}
+.glass{background:var(--surface);backdrop-filter:blur(18px);border:1px solid rgba(0,119,200,.18);box-shadow:var(--shadow)}
+.card{transition:transform .3s ease,box-shadow .3s ease}
+.card:hover{transform:translateY(-10px);box-shadow:0 25px 45px rgba(0,119,200,.16)}
+#particles{position:fixed;inset:0;z-index:-1}
+.gridbg{background-image:linear-gradient(rgba(0,119,200,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,119,200,.08) 1px,transparent 1px);background-size:40px 40px}
+.glow:hover{box-shadow:0 0 30px rgba(0,131,136,.35)}
+.fade{animation:fadeUp .8s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+nav{color:var(--text)}
+nav a{color:var(--text);transition:.2s}
+nav a:hover{color:var(--itri-blue)}
+nav .font-bold{color:var(--itri-blue)}
+section h2{color:var(--itri-blue)}
+h1,h2,h3,h4,h5,h6{color:var(--gray-dark)}
+a.glass{border-color:rgba(0,119,200,.25)}
+a.glass:hover{border-color:rgba(0,119,200,.5)}
+a.glass.glow{background:linear-gradient(135deg,var(--itri-blue),var(--itri-green));color:#fff}
+a.glass.glow:hover{background:linear-gradient(135deg,var(--itri-green),var(--itri-orange))}
+</style>
+</head>
+<body class="gridbg text-slate-700">
+<canvas id="particles"></canvas>
+
+<nav class="fixed top-0 w-full z-50 glass">
+<div class="max-w-7xl mx-auto flex justify-between p-4">
+<div class="font-bold text-blue-600">Evelyn Lee</div>
+<div class="space-x-4 text-sm">
+<a href="#about">關於我</a>
+<a href="#services">服務</a>
+<a href="#portfolio">作品集</a>
+<a href="#blog">部落格</a>
+<a href="#contact">聯絡我</a>
+</div>
+</div>
+</nav>
+
+<section class="min-h-screen flex items-center justify-center px-6">
+<div class="text-center max-w-4xl fade">
+<h1 id="typing" class="text-4xl md:text-6xl font-bold text-blue-600 mb-6"></h1>
+<p class="text-xl mb-8">Helping Organizations Build Smarter Workflows with AI.</p>
+<a class="glass glow px-8 py-4 rounded-xl inline-block border border-blue-300"
+href="https://calendar.app.google/cvFdnbBACBxYMfuh8" target="_blank">
+預約 AI 諮詢
+</a>
+</div>
+</section>
+
+<section id="about" class="max-w-6xl mx-auto p-8">
+<div class="glass rounded-3xl p-8">
+<h2 class="text-3xl font-bold mb-4">關於我</h2>
+<p>Evelyn Lee｜AI Workflow Consultant、Prompt Engineer。結合15年以上專案管理、技術文件管理、國際認證與政府標案經驗，協助企業導入 AI、優化流程與建立知識管理系統。</p>
+</div>
+</section>
+
+<section id="services" class="max-w-6xl mx-auto p-8">
+<h2 class="text-3xl font-bold mb-6">AI 解決方案服務</h2>
+<div class="grid md:grid-cols-4 gap-6">
+<div class="glass card rounded-2xl p-6"><h3 class="font-bold">Prompt Engineering</h3><p>Prompt設計與優化</p></div>
+<div class="glass card rounded-2xl p-6"><h3 class="font-bold">AI Automation</h3><p>工作流程自動化</p></div>
+<div class="glass card rounded-2xl p-6"><h3 class="font-bold">AI Research</h3><p>資訊搜尋與彙整</p></div>
+<div class="glass card rounded-2xl p-6"><h3 class="font-bold">Digital Transformation</h3><p>企業AI導入顧問</p></div>
+</div>
+</section>
+
+<section id="portfolio" class="max-w-6xl mx-auto p-8">
+<h2 class="text-3xl font-bold mb-6">作品集</h2>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="glass rounded-2xl p-6">AI 文件整理助手</div>
+<div class="glass rounded-2xl p-6">Prompt Template Library</div>
+<div class="glass rounded-2xl p-6">AI 研究與法規分析系統</div>
+</div>
+</section>
+
+<section id="blog" class="max-w-6xl mx-auto p-8">
+<h2 class="text-3xl font-bold mb-6">技術部落格</h2>
+<div class="glass rounded-2xl p-6">AI 趨勢、ChatGPT、Gemini、工作流程優化與企業AI轉型文章。</div>
+</section>
+
+<section id="contact" class="max-w-6xl mx-auto p-8 mb-20">
+<div class="glass rounded-3xl p-8 text-center">
+<h2 class="text-3xl font-bold mb-4">聯絡我</h2>
+<p class="mb-4">evelynli.yiting0526@gmail.com</p>
+<a class="glass glow px-8 py-4 rounded-xl inline-block" href="https://calendar.app.google/cvFdnbBACBxYMfuh8" target="_blank">Status: Ready to Connect</a>
+</div>
+</section>
+
+<script>
+const text="Prompt Engineering × AI Automation × Digital Transformation";
+let i=0;
+function type(){
+ if(i<text.length){document.getElementById('typing').innerHTML+=text.charAt(i);i++;setTimeout(type,70);}
+}
+type();
+
+const c=document.getElementById('particles'),ctx=c.getContext('2d');
+function resize(){c.width=innerWidth;c.height=innerHeight} resize(); addEventListener('resize',resize);
+let p=[...Array(60)].map(()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+function draw(){
+ ctx.clearRect(0,0,c.width,c.height);
+ p.forEach(a=>{
+  a.x+=a.vx;a.y+=a.vy;
+  if(a.x<0||a.x>c.width)a.vx*=-1;
+  if(a.y<0||a.y>c.height)a.vy*=-1;
+  ctx.beginPath();ctx.arc(a.x,a.y,2,0,7);ctx.fillStyle="#93c5fd";ctx.fill();
+ });
+ requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
