@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarkBeat AI - 頂級 AI 狗狗 MV 製作大師</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cyan: '#00f2fe',
+                            blue: '#4facfe',
+                            neonGreen: '#39ff14',
+                            dark: '#0a0a0f',
+                            card: '#12121e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 平滑滾動 */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* 隱藏滾動條但保持滾動 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 霓虹文字發光效果 */
+        .neon-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(0, 242, 254, 0.4);
+        }
+        .neon-text-green {
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.6), 0 0 20px rgba(57, 255, 20, 0.4);
+        }
+        /* 影片背景微調，確保滿版不變形 */
+        #video-bg {
+            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -2;
+        }
+        /* 科技感雜訊/網格背景 */
+        .tech-grid {
+            background-image: linear-gradient(rgba(18, 18, 30, 0.8) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(18, 18, 30, 0.8) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-white font-sans overflow-x-hidden antialiased">
+
+    <!-- 滿版背景影片與遮罩 -->
+    <!-- 這裡使用了吉娃娃與傑克羅素梗相關的生動狗狗影片（若需替換為您指定的特定連結，只需更改 src 即可） -->
+    <video autoplay loop muted playsinline id="video-bg" poster="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-playful-dog-running-on-the-grass-41481-large.mp4" type="video/mp4">
+        您的瀏覽器不支援 HTML5 影片。
+    </video>
+    
+    <!-- 滿版深色漸層遮罩 - 確保文字清晰可見 -->
+    <div class="fixed inset-0 bg-gradient-to-b from-black/80 via-brand-dark/70 to-brand-dark z-[-1]"></div>
+
+    <!-- 頂部導覽列 (Navbar) -->
+    <nav class="fixed w-full z-50 bg-brand-dark/60 backdrop-blur-md border-b border-white/10 px-6 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="bg-gradient-to-r from-brand-cyan to-brand-blue p-2.5 rounded-xl shadow-lg shadow-brand-cyan/20">
+                    <i class="fa-solid fa-dog text-brand-dark text-xl"></i>
+                </div>
+                <span class="text-2xl font-tech font-bold tracking-wider bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">BARKBEAT <span class="text-white">AI</span></span>
+            </a>
+
+            <!-- 選單 (Desktop) -->
+            <div class="hidden md:flex items-center space-x-8 font-medium">
+                <a href="#" class="hover:text-brand-cyan transition-colors duration-300">首頁</a>
+                <a href="#creator" class="hover:text-brand-cyan transition-colors duration-300">AI 製作室</a>
+                <a href="#dogs-info" class="hover:text-brand-cyan transition-colors duration-300">主角品種</a>
+                <a href="#gallery" class="hover:text-brand-cyan transition-colors duration-300">精選熱門 MV</a>
+                <a href="#features" class="hover:text-brand-cyan transition-colors duration-300">核心科技</a>
+            </div>
+
+            <!-- 右側按鈕 -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#creator" class="px-5 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue text-brand-dark font-bold rounded-full hover:shadow-lg hover:shadow-brand-cyan/50 hover:scale-105 transition-all duration-300">
+                    開始製作
+                </a>
+            </div>
+
+            <!-- 手機版選單按鈕 -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-2xl focus:outline-none text-white hover:text-brand-cyan">
+                <i id="menu-icon" class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- 手機版選單內容 -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-dark/95 border-b border-white/10 backdrop-blur-lg flex flex-col p-6 space-y-4 text-center">
+            <a href="#" onclick="toggleMobileMenu()" class="py-2 hover:text-brand-cyan transition-colors">首頁</a>
+            <a href="#creator" onclick="toggleMobileMenu()" class="py-2 hover:text-brand-cyan transition-colors">AI 製作室</a>
+            <a href="#dogs-info" onclick="toggleMobileMenu()" class="py-2 hover:text-brand-cyan transition-colors">主角品種</a>
+            <a href="#gallery" onclick="toggleMobileMenu()" class="py-2 hover:text-brand-cyan transition-colors">精選熱門 MV</a>
+            <a href="#features" onclick="toggleMobileMenu()" class="py-2 hover:text-brand-cyan transition-colors">核心科技</a>
+            <a href="#creator" onclick="toggleMobileMenu()" class="py-3 bg-gradient-to-r from-brand-cyan to-brand-blue text-brand-dark font-bold rounded-full">開始製作</a>
+        </div>
+    </nav>
+
+    <!-- 主視覺區首頁 (Hero Section) -->
+    <header class="min-h-screen flex flex-col justify-center items-center px-6 pt-20 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto space-y-8 z-10" data-aos="fade-up">
+            <!-- 標籤 -->
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase bg-white/10 border border-white/20 backdrop-blur-md text-brand-cyan">
+                <i class="fa-solid fa-wand-magic-sparkles mr-2 animate-pulse"></i> 世界首創・專屬狗狗的 AI MV 引擎
+            </span>
+            
+            <!-- 主標題 -->
+            <h1 class="text-5xl md:text-8xl font-black tracking-tight leading-tight">
+                激發 <span class="bg-gradient-to-r from-brand-cyan via-brand-neonGreen to-brand-blue bg-clip-text text-transparent neon-text-cyan">吉娃娃</span> <span class="text-white">&</span> <br>
+                <span class="bg-gradient-to-r from-brand-neonGreen to-brand-cyan bg-clip-text text-transparent">傑克羅素</span> 的搖滾魂！
+            </h1>
+            
+            <!-- 副標題 -->
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                不論是神經質卻充滿戲劇細胞的<strong>吉娃娃</strong>，還是精力無限、彈跳力滿分的<strong>傑克羅素梗</strong>。BarkBeat AI 透過尖端生成科技，為您的毛孩量身打造百萬點閱級的科幻/龐克/迷幻 3D 音樂錄影帶。
+            </p>
+
+            <!-- 操作按鈕 -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                <a href="#creator" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-cyan to-brand-blue text-brand-dark font-black text-lg rounded-xl hover:shadow-[0_0_25px_rgba(0,242,254,0.5)] hover:scale-105 transition-all duration-300 flex items-center justify-center">
+                    <i class="fa-solid fa-play mr-3"></i> 即刻免費生成 MV
+                </a>
+                <a href="#gallery" class="w-full sm:w-auto px-8 py-4 bg-white/10 border border-white/20 backdrop-blur-md text-white font-bold text-lg rounded-xl hover:bg-white/20 transition-all duration-300 flex items-center justify-center">
+                    <i class="fa-solid fa-circle-play mr-3 text-brand-neonGreen"></i> 觀賞示範作品
+                </a>
+            </div>
+
+            <!-- 動態數據顯示 -->
+            <div class="grid grid-cols-3 gap-4 pt-12 max-w-lg mx-auto font-tech">
+                <div class="bg-black/40 backdrop-blur-sm p-3 rounded-lg border border-white/5">
+                    <div class="text-3xl font-bold text-brand-cyan">142,851+</div>
+                    <div class="text-xs text-gray-400">已產出 MV</div>
+                </div>
+                <div class="bg-black/40 backdrop-blur-sm p-3 rounded-lg border border-white/5">
+                    <div class="text-3xl font-bold text-brand-neonGreen">99.2%</div>
+                    <div class="text-xs text-gray-400">主人驚呼率</div>
+                </div>
+                <div class="bg-black/40 backdrop-blur-sm p-3 rounded-lg border border-white/5">
+                    <div class="text-3xl font-bold text-brand-blue">150 ms</div>
+                    <div class="text-xs text-gray-400">音頻同步延遲</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 向下滾動指示 -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <span class="text-xs tracking-widest text-gray-400 mb-2 uppercase">展開探險</span>
+            <i class="fa-solid fa-chevron-down text-brand-cyan text-lg"></i>
+        </div>
+    </header>
+
+    <!-- 品種主角介紹區 (Dog Intro Section) -->
+    <section id="dogs-info" class="py-24 bg-brand-dark tech-grid border-t border-b border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">
+                    專為兩大天王犬種「量身調教」的 AI 視覺
+                </h2>
+                <p class="text-gray-400 mt-4">我們分析了數百萬張照片與行為模式，完美重現這兩個犬界傳奇的動靜神髓。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 吉娃娃卡片 -->
+                <div class="group bg-brand-card/60 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-brand-cyan/50 hover:shadow-[0_0_30px_rgba(0,242,254,0.15)] transition-all duration-500 flex flex-col justify-between">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl mb-6 aspect-video">
+                            <!-- 模擬吉娃娃圖片 placeholder -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="吉娃娃 AI 角色">
+                            <span class="absolute top-4 left-4 bg-brand-cyan text-brand-dark px-3 py-1 text-xs font-black rounded-full z-20 font-tech">CHIHUAHUA</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-cyan mb-3 flex items-center">
+                            吉娃娃：神經質賽博龐克巨星
+                        </h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            體積最小，態度最大！我們特製的 AI 模型擅長捕捉吉娃娃那「每秒顫抖 60 次」的獨特動態，轉換為迷幻、重低音 Dubstep 或蒸汽波風格的 MV 主角。大眼睛、大耳朵加上賽博格科技配飾，無疑是宇宙最強的反叛歌手。
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-white/5 flex justify-between items-center text-sm">
+                        <span class="text-gray-400"><i class="fa-solid fa-bolt mr-1.5 text-brand-cyan"></i> 顫抖美學補正</span>
+                        <span class="text-gray-400"><i class="fa-solid fa-eye mr-1.5 text-brand-cyan"></i> 8K 狂野巨眼渲染</span>
+                    </div>
+                </div>
+
+                <!-- 傑克羅素梗卡片 -->
+                <div class="group bg-brand-card/60 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-brand-neonGreen/50 hover:shadow-[0_0_30px_rgba(57,255,20,0.15)] transition-all duration-500 flex flex-col justify-between">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl mb-6 aspect-video">
+                            <!-- 模擬傑克羅素圖片 placeholder -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="傑克羅素梗 AI 角色">
+                            <span class="absolute top-4 left-4 bg-brand-neonGreen text-brand-dark px-3 py-1 text-xs font-black rounded-full z-20 font-tech">JACK RUSSELL</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-neonGreen mb-3 flex items-center">
+                            傑克羅素梗：極限運動搖滾硬漢
+                        </h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            永無止境的電力與敏捷！針對彈跳力極高、眼神堅毅的傑克羅素梗，AI 運算會將其動作融入極限跑酷、重金屬搖滾、滑板或電子龐克 MV 中。牠們在 MV 中能在高樓間飛簷走壁，展現超乎想像的戰鬥力！
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-white/5 flex justify-between items-center text-sm">
+                        <span class="text-gray-400"><i class="fa-solid fa-person-running mr-1.5 text-brand-neonGreen"></i> 200BPM 跑酷追踪</span>
+                        <span class="text-gray-400"><i class="fa-solid fa-dumbbell mr-1.5 text-brand-neonGreen"></i> 超高爆發動作特寫</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心 AI MV 產生器區 (AI Creator Tool) -->
+    <section id="creator" class="py-24 relative overflow-hidden bg-gradient-to-b from-brand-dark to-brand-card">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#4facfe_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-cyan font-bold tracking-widest text-sm uppercase">AI 創作控制台</span>
+                <h2 class="text-4xl md:text-5xl font-black mt-2">啟動你的狗狗 MV 夢工廠</h2>
+                <p class="text-gray-400 mt-2">輸入資訊，讓我們的 AI 引擎為您的狗狗創造一部驚世鉅作</p>
+            </div>
+
+            <!-- 兩欄式控制面板 -->
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- 左側輸入表單 -->
+                <div class="lg:col-span-7 bg-black/60 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl space-y-6">
+                    <h3 class="text-xl font-bold pb-4 border-b border-white/10 flex items-center">
+                        <i class="fa-solid fa-sliders mr-3 text-brand-cyan"></i> 創意設定參數
+                    </h3>
+
+                    <!-- 狗狗姓名 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">狗狗巨星姓名</label>
+                        <input id="dog-name" type="text" placeholder="例如：吉娃娃大帝、閃電傑克" class="w-full bg-brand-dark/80 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors">
+                    </div>
+
+                    <!-- 品種與性別選擇 -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">狗狗品種</label>
+                            <select id="dog-breed" class="w-full bg-brand-dark/80 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors">
+                                <option value="Chihuahua">吉娃娃 (賽博吉)</option>
+                                <option value="Jack Russell">傑克羅素梗 (熱血派)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">音樂曲風</label>
+                            <select id="music-genre" class="w-full bg-brand-dark/80 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors">
+                                <option value="Cyber-Punk Heavy Dubstep">賽博電子 Dubstep</option>
+                                <option value="Psychedelic Space Rock">迷幻太空搖滾</option>
+                                <option value="Cute Vaporwave Trap">可愛蒸汽波陷阱</option>
+                                <option value="Neon Synthwave Classic">霓虹復古電子流</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 主題視覺風格選擇 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">MV 視覺主視覺風格</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button onclick="selectStyle(this, 'Cyberpunk')" class="style-btn active-style border-2 border-brand-cyan bg-brand-cyan/10 text-brand-cyan rounded-xl p-3 text-center transition-all duration-300 flex flex-col items-center justify-center space-y-2">
+                                <i class="fa-solid fa-mask text-xl"></i>
+                                <span class="text-xs font-bold">賽博龐克</span>
+                            </button>
+                            <button onclick="selectStyle(this, 'OuterSpace')" class="style-btn border-2 border-white/10 hover:border-white/30 rounded-xl p-3 text-center transition-all duration-300 flex flex-col items-center justify-center space-y-2">
+                                <i class="fa-solid fa-user-astronaut text-xl"></i>
+                                <span class="text-xs font-bold">太空冒險</span>
+                            </button>
+                            <button onclick="selectStyle(this, 'HeavyMetal')" class="style-btn border-2 border-white/10 hover:border-white/30 rounded-xl p-3 text-center transition-all duration-300 flex flex-col items-center justify-center space-y-2">
+                                <i class="fa-solid fa-guitar text-xl"></i>
+                                <span class="text-xs font-bold">硬派重金屬</span>
+                            </button>
+                            <button onclick="selectStyle(this, 'Anime')" class="style-btn border-2 border-white/10 hover:border-white/30 rounded-xl p-3 text-center transition-all duration-300 flex flex-col items-center justify-center space-y-2">
+                                <i class="fa-solid fa-wand-magic text-xl"></i>
+                                <span class="text-xs font-bold">日系科幻動漫</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="selected-style" value="Cyberpunk">
+                    </div>
+
+                    <!-- 狗狗特質描述 (AI 提示詞) -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">補充個性或背景設定 (選填)</label>
+                        <textarea id="dog-prompt" rows="3" placeholder="例如：戴墨鏡、喜歡在直升機上唱歌、只要看到郵差就會發動雷射眼激光..." class="w-full bg-brand-dark/80 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors resize-none"></textarea>
+                    </div>
+
+                    <!-- 生成按鈕 -->
+                    <button onclick="generateDogMV()" class="w-full py-4 bg-gradient-to-r from-brand-cyan via-brand-neonGreen to-brand-blue text-brand-dark font-black text-xl rounded-xl hover:shadow-[0_0_30px_rgba(57,255,20,0.4)] transition-all duration-300 flex items-center justify-center group">
+                        <span class="mr-2">啟動 AI 矩陣生成 MV</span>
+                        <i class="fa-solid fa-atom animate-spin group-hover:scale-125 transition-transform"></i>
+                    </button>
+                </div>
+
+                <!-- 右側即時動態預覽/生成視窗 -->
+                <div class="lg:col-span-5 h-full">
+                    <div id="preview-container" class="bg-black/80 border border-white/15 rounded-3xl p-6 min-h-[480px] flex flex-col justify-between relative overflow-hidden">
+                        
+                        <!-- 科技感裝飾角 -->
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-brand-cyan m-2"></div>
+                        <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-brand-cyan m-2"></div>
+                        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-brand-cyan m-2"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-brand-cyan m-2"></div>
+
+                        <!-- 狀態提示 -->
+                        <div class="flex justify-between items-center text-xs font-tech tracking-wider text-gray-400">
+                            <span>SYSTEM: BARKBEAT_v2.5_ACTIVE</span>
+                            <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-brand-neonGreen mr-2 animate-ping"></span>連線正常</span>
+                        </div>
+
+                        <!-- 預覽畫面中間區塊 - 隨狀態更換 -->
+                        <div id="preview-content" class="my-auto py-12 text-center flex flex-col items-center justify-center space-y-6">
+                            <div class="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center bg-brand-dark/50">
+                                <i class="fa-solid fa-clapperboard text-4xl text-gray-500 animate-pulse"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <h4 class="text-lg font-bold text-gray-200">等待輸入參數中...</h4>
+                                <p class="text-sm text-gray-500 max-w-xs mx-auto">請於左側輸入您狗狗巨星的名字，選擇獨特音樂和視覺風格，然後按下「啟動 AI 矩陣」！</p>
+                            </div>
+                        </div>
+
+                        <!-- 底部模擬控制列 -->
+                        <div class="border-t border-white/10 pt-4 flex justify-between items-center text-xs text-gray-400">
+                            <span>FPS: 60.00</span>
+                            <span id="rendering-progress">狀態: 空閒</span>
+                            <span>GPU TEMP: 48°C</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 精選熱門 MV 畫廊區 (Gallery Section) -->
+    <section id="gallery" class="py-24 bg-brand-dark/95 border-t border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                <div>
+                    <span class="text-brand-neonGreen font-bold tracking-widest text-sm uppercase">熱播主打星</span>
+                    <h2 class="text-4xl font-extrabold mt-2">BarkBeat 狗狗流行音樂排行榜</h2>
+                    <p class="text-gray-400 mt-2">看看其他飼主與 AI 攜手打造的爆紅極致音樂錄影帶。</p>
+                </div>
+                <div class="flex space-x-2 mt-6 md:mt-0">
+                    <button class="px-4 py-2 bg-brand-card hover:bg-brand-cyan/20 border border-white/10 hover:border-brand-cyan text-white text-sm font-semibold rounded-lg transition-all duration-300">
+                        <i class="fa-solid fa-fire mr-1"></i> 最熱門
+                    </button>
+                    <button class="px-4 py-2 bg-brand-card hover:bg-brand-neonGreen/20 border border-white/10 hover:border-brand-neonGreen text-white text-sm font-semibold rounded-lg transition-all duration-300">
+                        <i class="fa-solid fa-clock mr-1"></i> 最新發表
+                    </button>
+                </div>
+            </div>
+
+            <!-- 排行卡片格 -->
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- 卡片 1 -->
+                <div class="group bg-brand-card/40 rounded-2xl border border-white/10 overflow-hidden hover:border-brand-cyan/40 transition-all duration-300">
+                    <div class="relative aspect-video overflow-hidden bg-black flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80" alt="MV封面">
+                        <!-- 播放按鈕 -->
+                        <button onclick="playDemoVideo('閃電汪汪：吉娃娃的電音狂潮', 'https://assets.mixkit.co/videos/preview/mixkit-funny-chihuahua-in-a-knitted-sweater-sitting-on-the-couch-41584-large.mp4')" class="absolute z-20 w-16 h-16 rounded-full bg-brand-cyan text-brand-dark flex items-center justify-center shadow-lg shadow-brand-cyan/30 scale-90 group-hover:scale-100 transition-all duration-300">
+                            <i class="fa-solid fa-play text-2xl ml-1"></i>
+                        </button>
+                        <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-brand-cyan px-2.5 py-1 rounded text-xs font-bold font-tech">02:14</div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-brand-cyan bg-brand-cyan/10 px-2 py-0.5 rounded font-bold">吉娃娃 (Cyberpunk)</span>
+                            <span class="text-gray-400"><i class="fa-solid fa-eye mr-1"></i> 2.4M 點閱</span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-brand-cyan transition-colors">閃電汪汪：吉娃娃的電音狂潮</h3>
+                        <p class="text-sm text-gray-400 line-clamp-2">在東京霓虹街頭，一隻穿著金屬皮衣的吉娃娃用激昂的高頻咆哮聲同步帶動迷幻重低音，掀起整座城市的革命！</p>
+                        <div class="flex items-center space-x-3 pt-3 border-t border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold">阿強</div>
+                            <span class="text-xs text-gray-400">飼主：阿強 & 奇奇</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 卡片 2 -->
+                <div class="group bg-brand-card/40 rounded-2xl border border-white/10 overflow-hidden hover:border-brand-neonGreen/40 transition-all duration-300">
+                    <div class="relative aspect-video overflow-hidden bg-black flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80" alt="MV封面">
+                        <!-- 播放按鈕 -->
+                        <button onclick="playDemoVideo('火箭火箭：太空漫遊的傑克羅素', 'https://assets.mixkit.co/videos/preview/mixkit-dog-running-with-a-toy-in-his-mouth-on-grass-41480-large.mp4')" class="absolute z-20 w-16 h-16 rounded-full bg-brand-neonGreen text-brand-dark flex items-center justify-center shadow-lg shadow-brand-neonGreen/30 scale-90 group-hover:scale-100 transition-all duration-300">
+                            <i class="fa-solid fa-play text-2xl ml-1"></i>
+                        </button>
+                        <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-brand-neonGreen px-2.5 py-1 rounded text-xs font-bold font-tech">01:58</div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-brand-neonGreen bg-brand-neonGreen/10 px-2 py-0.5 rounded font-bold">傑克羅素梗 (Space Rock)</span>
+                            <span class="text-gray-400"><i class="fa-solid fa-eye mr-1"></i> 1.8M 點閱</span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-brand-neonGreen transition-colors">火箭火箭：太空漫遊的傑克羅素</h3>
+                        <p class="text-sm text-gray-400 line-clamp-2">在零重力的太空艙中，傑克羅素梗利用其瘋狂的後空翻與跳躍精準撞擊節奏能量球，在小行星帶穿梭的科幻神曲！</p>
+                        <div class="flex items-center space-x-3 pt-3 border-t border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-xs font-bold">Emma</div>
+                            <span class="text-xs text-gray-400">飼主：Emma & 樂樂</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 卡片 3 -->
+                <div class="group bg-brand-card/40 rounded-2xl border border-white/10 overflow-hidden hover:border-brand-blue/40 transition-all duration-300">
+                    <div class="relative aspect-video overflow-hidden bg-black flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80" alt="MV封面">
+                        <!-- 播放按鈕 -->
+                        <button onclick="playDemoVideo('蒸氣之怒：粉紅吉娃娃的叛逆日常', 'https://assets.mixkit.co/videos/preview/mixkit-little-dog-resting-peacefully-on-bed-41582-large.mp4')" class="absolute z-20 w-16 h-16 rounded-full bg-brand-blue text-brand-dark flex items-center justify-center shadow-lg shadow-brand-blue/30 scale-90 group-hover:scale-100 transition-all duration-300">
+                            <i class="fa-solid fa-play text-2xl ml-1"></i>
+                        </button>
+                        <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-brand-blue px-2.5 py-1 rounded text-xs font-bold font-tech">03:02</div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-brand-blue bg-brand-blue/10 px-2 py-0.5 rounded font-bold">吉娃娃 (Vaporwave)</span>
+                            <span class="text-gray-400"><i class="fa-solid fa-eye mr-1"></i> 920K 點閱</span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-brand-blue transition-colors">蒸氣之怒：粉紅吉娃娃的叛逆日常</h3>
+                        <p class="text-sm text-gray-400 line-clamp-2">慵懶而懷舊的粉紅色黃昏，吉娃娃躺在巨大的羅馬神像上，背景是海豚與 Windows95 視窗，用最無奈卻無辜的眼神藐視一切。</p>
+                        <div class="flex items-center space-x-3 pt-3 border-t border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-rose-600 flex items-center justify-center text-xs font-bold">小林</div>
+                            <span class="text-xs text-gray-400">飼主：小林 & 咪咪</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心科技功能介紹 (Features Section) -->
+    <section id="features" class="py-24 bg-gradient-to-t from-brand-dark to-brand-card/50 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-cyan font-bold tracking-widest text-sm uppercase">CORE TECH</span>
+                <h2 class="text-4xl font-extrabold mt-2">重新定義狗狗音樂錄影帶的黑科技</h2>
+                <p class="text-gray-400 mt-2">我們引以為傲的三大自研人工智慧引擎</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 科技 1 -->
+                <div class="bg-black/40 border border-white/5 p-8 rounded-2xl space-y-4 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center text-brand-cyan text-2xl">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">音畫節奏同步 (BarkSync)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        自動分析狗狗吠叫聲波、耳朵抖動與尾巴搖擺頻率。我們的引擎能精準地將這些物理動作，與音樂的鼓點 (BPM)、Bass Drop 在毫秒級完美貼合，帶來令人驚奇的打擊快感。
+                    </p>
+                </div>
+
+                <!-- 科技 2 -->
+                <div class="bg-black/40 border border-white/5 p-8 rounded-2xl space-y-4 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-brand-neonGreen/10 flex items-center justify-center text-brand-neonGreen text-2xl">
+                        <i class="fa-solid fa-shield-dog"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">超擬真 3D 犬體物理 (DogPhysX)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        不管是吉娃娃因緊張或興奮產生的小碎步，還是傑克羅素梗極具張力的肌肉線條與跳躍。多層次骨骼追蹤渲染器可還原其真實物理動態，讓其在 3D 的賽博街頭自由穿梭而不失真。
+                    </p>
+                </div>
+
+                <!-- 科技 3 -->
+                <div class="bg-black/40 border border-white/5 p-8 rounded-2xl space-y-4 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue text-2xl">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">一鍵風格重塑 (StyleForge)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        只需上傳幾張您家毛孩的照片，我們的生成網路會在短短數秒內，將其重建為卡通賽博風、像素藝術風、日系科幻動漫或古典油畫等多達 12 種驚人視覺。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品集展示區塊 (Portfolio Showcase) -->
+    <section id="portfolio" class="py-16 bg-brand-card/60 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold">作品集展示</h2>
+                <p class="text-gray-400 mt-2">多比的照片與短片展示（純畫面展示：自動播放、靜音、循環，無社群互動按鈕）</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 items-start">
+                <!-- 左側：多比照片（請上傳圖片到 images/ 目錄，或替換為您現有路徑） -->
+                <div class="col-span-1">
+                    <div class="grid gap-4">
+                        <img src="images/tobi-1.jpg" alt="多比照片 1" class="w-full h-56 object-cover rounded-2xl border border-white/10 shadow-sm">
+                        <img src="images/tobi-2.jpg" alt="多比照片 2" class="w-full h-56 object-cover rounded-2xl border border-white/10 shadow-sm">
+                    </div>
+                </div>
+
+                <!-- 右側：YouTube Shorts 嵌入（自動播放 / 靜音 / 循環 / 無控制項） -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="aspect-video overflow-hidden rounded-2xl bg-black border border-white/10">
+                            <iframe src="https://www.youtube.com/embed/3D7tb6FEjiM?autoplay=1&mute=1&loop=1&controls=0&rel=0&modestbranding=1&playsinline=1&playlist=3D7tb6FEjiM" title="YouTube video player" allow="autoplay; fullscreen" allowfullscreen class="w-full h-full pointer-events-none"></iframe>
+                        </div>
+
+                        <div class="aspect-video overflow-hidden rounded-2xl bg-black border border-white/10">
+                            <iframe src="https://www.youtube.com/embed/MF60cODUpNM?autoplay=1&mute=1&loop=1&controls=0&rel=0&modestbranding=1&playsinline=1&playlist=MF60cODUpNM" title="YouTube video player" allow="autoplay; fullscreen" allowfullscreen class="w-full h-full pointer-events-none"></iframe>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gray-400">提示：若要顯示您在對話中上傳的實際照片，請將檔案放到 <span class="font-medium text-white">images/tobi-1.jpg</span> 與 <span class="font-medium text-white">images/tobi-2.jpg</span>，或編輯上方 <span class="font-medium text-white">img</span> 標籤的 <span class="font-medium text-white">src</span> 屬性。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 (Footer) -->
+    <footer class="bg-brand-dark border-t border-white/10 py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div class="space-y-2">
+                <a href="#" class="flex items-center justify-center md:justify-start space-x-3">
+                    <div class="bg-gradient-to-r from-brand-cyan to-brand-blue p-2 rounded-lg">
+                        <i class="fa-solid fa-dog text-brand-dark"></i>
+                    </div>
+                    <span class="text-xl font-tech font-bold tracking-wider">BARKBEAT <span class="text-brand-cyan">AI</span></span>
+                </a>
+                <p class="text-xs text-gray-500">© 2026 BarkBeat AI Inc. 全球頂級寵物生成藝術工坊。版權所有。</p>
+            </div>
+            
+            <div class="flex space-x-6 text-xl text-gray-400">
+                <a href="#" class="hover:text-brand-cyan transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-brand-neonGreen transition-colors"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="hover:text-brand-blue transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-brand-cyan transition-colors"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DEMO 影片播放燈箱彈出視窗 (Modal) -->
+    <div id="video-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden justify-center items-center p-4 transition-all duration-300">
+        <div class="relative bg-brand-card w-full max-w-4xl rounded-2xl border border-white/15 overflow-hidden">
+            <!-- 關閉按鈕 -->
+            <button onclick="closeDemoVideo()" class="absolute top-4 right-4 z-30 bg-black/60 hover:bg-white/10 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="p-4 bg-brand-dark/90 border-b border-white/5">
+                <h4 id="modal-video-title" class="text-lg font-bold text-brand-cyan"></h4>
+            </div>
+            <div class="aspect-video w-full bg-black">
+                <video id="modal-video-player" controls autoplay class="w-full h-full object-contain"></video>
+            </div>
+        </div>
+    </div>
+
+    <!-- 核心 JS 互動邏輯 -->
+    <script>
+        // 1. 手機版導覽列選單切換
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = 'fa-solid fa-xmark';
+            } else {
+                menu.classList.add('hidden');
+                icon.className = 'fa-solid fa-bars';
+            }
+        }
+
+        // 2. 創意風格選擇器切換
+        function selectStyle(button, styleValue) {
+            // 清除所有的 active 樣式
+            const btns = document.querySelectorAll('.style-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('active-style', 'border-brand-cyan', 'bg-brand-cyan/10', 'text-brand-cyan');
+                btn.classList.add('border-white/10', 'hover:border-white/30');
+            });
+
+            // 設置當前選中按鈕的樣式
+            button.classList.remove('border-white/10', 'hover:border-white/30');
+            button.classList.add('active-style', 'border-brand-cyan', 'bg-brand-cyan/10', 'text-brand-cyan');
+
+            // 儲存值
+            document.getElementById('selected-style').value = styleValue;
+        }
+
+        // 3. 虛擬/Gemini API 狗狗 MV 生成模擬
+        const apiKey = ""; // 依規定環境會自動注入或留空
+        
+        async function generateDogMV() {
+            const dogNameInput = document.getElementById('dog-name');
+            const breedSelect = document.getElementById('dog-breed');
+            const genreSelect = document.getElementById('music-genre');
+            const styleInput = document.getElementById('selected-style');
+            const promptInput = document.getElementById('dog-prompt');
+
+            const dogName = dogNameInput.value.trim() || "神秘狗狗巨星";
+            const breed = breedSelect.options[breedSelect.selectedIndex].text;
+            const genre = genreSelect.value;
+            const style = styleInput.value;
+            const customPrompt = promptInput.value.trim();
+
+            const previewContainer = document.getElementById('preview-container');
+            const previewContent = document.getElementById('preview-content');
+            const renderingProgress = document.getElementById('rendering-progress');
+
+            // 進入載入動畫狀態 (模擬 AI 矩陣生成)
+            renderingProgress.innerText = "狀態: AI 模型載入中...";
+            previewContent.innerHTML = `
+                <div class="flex flex-col items-center justify-center space-y-6 py-12">
+                    <div class="relative w-28 h-28 flex items-center justify-center">
+                        <span class="absolute inline-flex h-full w-full rounded-full bg-brand-cyan/20 animate-ping"></span>
+                        <div class="w-20 h-20 rounded-full border-t-4 border-b-4 border-brand-cyan animate-spin flex items-center justify-center bg-brand-dark">
+                            <i class="fa-solid fa-atom text-2xl text-brand-neonGreen animate-pulse"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xl font-bold neon-text-cyan animate-pulse">AI 正在捕捉「${dogName}」的神韻</h4>
+                        <p class="text-xs text-gray-400 font-tech tracking-wider" id="generation-step">INITIALIZING DOCKER & GEOMETRY PIPELINE...</p>
+                        <div class="w-48 bg-white/10 h-1.5 rounded-full overflow-hidden mx-auto mt-2">
+                            <div id="progress-bar-fill" class="bg-gradient-to-r from-brand-cyan to-brand-neonGreen h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // 模擬生成進度提示
+            const steps = [
+                { text: "建立多層次 3D 骨架中...", progress: 25 },
+                { text: `套用 ${breed} 獨家臉部微小表情...`, progress: 50 },
+                { text: `音頻解碼：將曲風 [${genre}] 轉化為節奏律動點...`, progress: 75 },
+                { text: `場景渲染：正在套用 [${style}] 風格環境色...`, progress: 90 },
+                { text: "高畫質畫面導出中...", progress: 100 }
+            ];
+
+            for (let i = 0; i < steps.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                const stepText = document.getElementById('generation-step');
+                const bar = document.getElementById('progress-bar-fill');
+                if (stepText && bar) {
+                    stepText.innerText = steps[i].text.toUpperCase();
+                    bar.style.width = `${steps[i].progress}%`;
+                }
+            }
+
+            renderingProgress.innerText = "狀態: 運算完成！";
+
+            // 根據品種給予對應的模擬影片，展現極高誠意與點擊效果
+            let finalVideoUrl = "";
+            let dogPoster = "";
+            if (breedSelect.value === "Chihuahua") {
+                // 吉娃娃模擬影片
+                finalVideoUrl = "https://assets.mixkit.co/videos/preview/mixkit-funny-chihuahua-in-a-knitted-sweater-sitting-on-the-couch-41584-large.mp4";
+                dogPoster = "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800";
+            } else {
+                // 傑克羅素模擬影片
+                finalVideoUrl = "https://assets.mixkit.co/videos/preview/mixkit-playful-dog-running-on-the-grass-41481-large.mp4";
+                dogPoster = "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=800";
+            }
+
+            // 生成專屬的 AI MV 動感介紹文字（模擬極佳的使用者反饋）
+            const resultHtml = `
+                <div class="space-y-4 text-left h-full flex flex-col justify-between">
+                    <!-- 成果影片區 -->
+                    <div class="relative rounded-2xl overflow-hidden border border-brand-cyan/30 aspect-video bg-black shadow-[0_0_20px_rgba(0,242,254,0.2)]">
+                        <video id="ai-generated-video" class="w-full h-full object-cover" controls autoplay loop>
+                            <source src="${finalVideoUrl}" type="video/mp4">
+                        </video>
+                        <span class="absolute top-3 left-3 bg-brand-neonGreen text-brand-dark px-2.5 py-1 text-xs font-black rounded-md z-10 font-tech">AI LIVE PREVIEW</span>
+                    </div>
+
+                    <!-- MV 詳細資訊 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-xl font-bold text-white tracking-wide">${dogName} - 宇宙狂吠記</h4>
+                            <span class="text-xs text-brand-cyan font-bold font-tech">CODE: BARK_${Math.floor(Math.random() * 90000) + 10000}</span>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <b>品種：</b>${breed} | <b>視覺風貌：</b>${style} <br>
+                            <b>伴奏核心：</b>${genre} <br>
+                            ${customPrompt ? `<b>主人特別加註提示：</b>"${customPrompt}"` : ""}
+                        </p>
+                        <div class="p-3 bg-brand-dark/90 border border-white/5 rounded-xl text-xs text-gray-300 leading-relaxed">
+                            <span class="text-brand-neonGreen font-bold"><i class="fa-solid fa-comment-dots"></i> AI 導演評語：</span>
+                            主角「${dogName}」展現了極佳的鏡頭張力，在充滿 ${style} 氛圍的舞台上與 ${genre} 的重低音節奏融為一體，預計在狗狗圈將會突破百萬點閱率！
+                        </div>
+                    </div>
+
+                    <!-- 操作按鈕 -->
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="shareMv('${dogName}')" class="py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-bold flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-share-nodes mr-2 text-brand-cyan"></i> 分享給狗友
+                        </button>
+                        <button onclick="resetCreator()" class="py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-brand-dark rounded-lg text-sm font-black flex items-center justify-center hover:shadow-lg hover:shadow-brand-cyan/20 transition-all">
+                            <i class="fa-solid fa-rotate-left mr-2"></i> 製作新曲
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                previewContent.classList.remove('my-auto', 'py-12', 'text-center', 'items-center', 'justify-center', 'space-y-6');
+                previewContent.innerHTML = resultHtml;
+            }, 500);
+        }
+
+        // 4. 重置創作面板
+        function resetCreator() {
+            const previewContent = document.getElementById('preview-content');
+            const renderingProgress = document.getElementById('rendering-progress');
+            
+            renderingProgress.innerText = "狀態: 空閒";
+            previewContent.classList.add('my-auto', 'py-12', 'text-center', 'items-center', 'justify-center', 'space-y-6');
+            previewContent.innerHTML = `
+                <div class="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center bg-brand-dark/50">
+                    <i class="fa-solid fa-clapperboard text-4xl text-gray-500 animate-pulse"></i>
+                </div>
+                <div class="space-y-2">
+                    <h4 class="text-lg font-bold text-gray-200">等待輸入參數中...</h4>
+                    <p class="text-sm text-gray-500 max-w-xs mx-auto">請於左側輸入您狗狗巨星的名字，選擇獨特音樂和視覺風格，然後按下「啟動 AI 矩陣」！</p>
+                </div>
+            `;
+        }
+
+        // 5. 播放 Demo 影片燈箱
+        function playDemoVideo(title, videoUrl) {
+            const modal = document.getElementById('video-modal');
+            const player = document.getElementById('modal-video-player');
+            const modalTitle = document.getElementById('modal-video-title');
+
+            modalTitle.innerText = title;
+            player.src = videoUrl;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            player.play();
+        }
+
+        // 6. 關閉 Demo 影片
+        function closeDemoVideo() {
+            const modal = document.getElementById('video-modal');
+            const player = document.getElementById('modal-video-player');
+
+            player.pause();
+            player.src = "";
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        // 7. 分享功能（兼容 Clipboard 安全處理）
+        function shareMv(dogName) {
+            const tempText = `我剛剛在 BarkBeat AI 為我的狗狗「${dogName}」製作了超炫的賽博龐克 MV！大家快來看看這隻搖滾神犬！`;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = tempText;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            // 建立美觀的暫時提示框代替 alert
+            const notification = document.createElement("div");
+            notification.className = "fixed bottom-5 right-5 z-50 bg-gradient-to-r from-brand-cyan to-brand-blue text-brand-dark font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-brand-cyan/30 flex items-center space-x-2 animate-bounce";
+            notification.innerHTML = `<i class="fa-solid fa-circle-check text-lg"></i> <span>分享連結已成功複製到剪貼簿！</span>`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
